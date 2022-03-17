@@ -1,0 +1,41 @@
+@import '../../style/variables';
+
+.single-comic {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 293px 550px auto;
+    column-gap: 50px;
+    align-items: start;
+    &__img {
+        width: 293px;
+        height: 450px;
+        object-fit: cover;
+    }
+    &__name {
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1.18;
+    }
+    &__descr {
+        margin-top: 25px;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 1.16;
+    }
+    &__price {
+        margin-top: 25px;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 1.16;
+        color: $main-color;
+    }
+    &__back {
+        justify-self: end;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 24px;
+        &:hover {
+            color: $main-color;
+        }
+    }
+}
