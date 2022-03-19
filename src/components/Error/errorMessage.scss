@@ -1,0 +1,11 @@
+.error-message {
+    text-align: center;
+    &__img {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+    }
+    &__text {
+        font-weight: 700;
+    }
+}
