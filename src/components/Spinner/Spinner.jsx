@@ -7,6 +7,7 @@ const Spinner = () => {
                 background: 'rgb(0, 0, 0, 0)',
                 display: 'block',
                 shapeRendering: 'auto',
+                alignSelf: 'center',
             }}
             width='200px'
             height='200px'
