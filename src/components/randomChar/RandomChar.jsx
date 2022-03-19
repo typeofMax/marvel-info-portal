@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../Spinner/Spinner';
+import ErrorMessage from '../Error/ErrorMessage';
 
 import './randomChar.scss';
 
@@ -12,6 +13,7 @@ class RandomChar extends Component {
         this.state = {
             char: {},
             loading: true,
+            error: false,
         };
         this.updateCharacter();
     }
@@ -22,17 +24,32 @@ class RandomChar extends Component {
         this.setState({ char, loading: false });
     };
 
+    onCharLoadingError = () => {
+        this.setState({
+            loading: false,
+            error: true,
+        });
+    };
+
     updateCharacter = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.marvelService.getCharacter(id).then(this.onCharLoaded);
+        this.marvelService
+            .getCharacter(id)
+            .then(this.onCharLoaded)
+            .catch(this.onCharLoadingError);
     };
 
     render() {
-        const { char, loading } = this.state;
+        const { char, loading, error } = this.state;
+        const errorMessage = error ? <ErrorMessage /> : null;
+        const spinner = loading ? <Spinner /> : null;
+        const randomBlockContent = !(loading || error) ? <View char={char} /> : null;
 
         return (
             <div className='random-char'>
-                {loading ? <Spinner /> : <View char={char} />}
+                {errorMessage}
+                {spinner}
+                {randomBlockContent}
                 <div className='random-char__static'>
                     <p className='random-char__title'>
                         Random character for today! Do you want to get to know
