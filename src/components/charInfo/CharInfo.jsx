@@ -1,61 +1,135 @@
-import './charInfo.scss';
-import loki from '../../resources/img/loki.jpg';
+import { Component } from 'react';
 
-const CharInfo = () => {
+import MarvelService from '../../services/MarvelService';
+import Skeleton from '../skeleton/Skeleton';
+import ErrorMessage from '../Error/ErrorMessage';
+import Spinner from '../Spinner/Spinner';
+
+import './charInfo.scss';
+
+class CharInfo extends Component {
+    state = {
+        character: null,
+        loading: false,
+        error: false,
+    };
+
+    marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.updateCharacter();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.selectetCharId !== this.props.selectetCharId) {
+            this.updateCharacter();
+        }
+    }
+
+    updateCharacter = () => {
+        const { selectetCharId } = this.props;
+
+        if (!selectetCharId) {
+            return;
+        }
+
+        this.onCharLoading();
+        console.log('запрос');
+        this.marvelService
+            .getCharacter(selectetCharId)
+            .then(this.onCharLoaded)
+            .catch(this.onLoadingError);
+    };
+
+    onCharLoading = () => {
+        this.setState({
+            loading: true,
+            error: false,
+        });
+    };
+
+    onCharLoaded = (character) => {
+        this.setState({
+            character,
+            loading: false,
+        });
+    };
+
+    onLoadingError = () => {
+        this.setState({
+            loading: false,
+            error: true,
+        });
+    };
+
+    render() {
+        const { character, loading, error } = this.state;
+        const errorMessage = error ? <ErrorMessage /> : null;
+        const spinner = loading ? <Spinner /> : null;
+        const skeleton = !(error || loading || character) ? <Skeleton /> : null;
+        const viewContent = !(error || loading || !character) ? (
+            <View character={character} />
+        ) : null;
+
+        return (
+            <div className='char__info'>
+                {errorMessage}
+                {spinner}
+                {skeleton}
+                {viewContent}
+            </div>
+        );
+    }
+}
+
+const View = (props) => {
+    const {
+        character: { name, description, thumbnail, homepage, wiki, comicses },
+    } = props;
+
+    let imgStyle = { objectFit: 'cover' };
+
+    if (
+        thumbnail ===
+        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+    ) {
+        imgStyle = { objectFit: 'fill' };
+    }
+
     return (
-        <div className='char__info'>
+        <>
             <div className='char__basics'>
-                <img src={loki} alt='Loki' />
+                <img src={thumbnail} alt={name} style={imgStyle} />
                 <div>
-                    <div className='char__info-name'>Loki</div>
+                    <div className='char__info-name'>{name}</div>
                     <div className='char__btns'>
-                        <a href='#' className='button button_main'>
+                        <a href={homepage} className='button button_main'>
                             <div className='inner'>HOMEPAGE</div>
                         </a>
-                        <a href='#' className='button button_secondary'>
+                        <a href={wiki} className='button button_secondary'>
                             <div className='inner'>WIKI</div>
                         </a>
                     </div>
                 </div>
             </div>
-            <div className='char__descr'>
-                In Norse mythology, Loki is a god or jötunn (or both). Loki is
-                the son of Fárbauti and Laufey, and the brother of Helblindi and
-                Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the
-                wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki
-                is the father of Nari and/or Narfi and with the stallion
-                Svaðilfari as the father, Loki gave birth—in the form of a
-                mare—to the eight-legged horse Sleipnir. In addition, Loki is
-                referred to as the father of Váli in the Prose Edda.
-            </div>
+            <div className='char__descr'>{description}</div>
             <div className='char__comics'>Comics:</div>
             <ul className='char__comics-list'>
+                {comicses.map((comics, i) => {
+                    // eslint-disable-next-line
+                    if (i > 9) return;
+
+                    return (
+                        <li key={i} className='char__comics-item'>
+                            {comics.name}
+                        </li>
+                    );
+                })}
                 <li className='char__comics-item'>
                     All-Winners Squad: Band of Heroes (2011) #3
                 </li>
-                <li className='char__comics-item'>Alpha Flight (1983) #50</li>
-                <li className='char__comics-item'>
-                    Amazing Spider-Man (1999) #503
-                </li>
-                <li className='char__comics-item'>
-                    Amazing Spider-Man (1999) #504
-                </li>
-                <li className='char__comics-item'>
-                    AMAZING SPIDER-MAN VOL. 7: BOOK OF EZEKIEL TPB (Trade
-                    Paperback)
-                </li>
-                <li className='char__comics-item'>
-                    Amazing-Spider-Man: Worldwide Vol. 8 (Trade Paperback)
-                </li>
-                <li className='char__comics-item'>
-                    Asgardians Of The Galaxy Vol. 2: War Of The Realms (Trade
-                    Paperback)
-                </li>
-                <li className='char__comics-item'>Vengeance (2011) #4</li>
-                <li className='char__comics-item'>Avengers (1963) #1</li>
-                <li className='char__comics-item'>Avengers (1996) #1</li>
             </ul>
-        </div>
+        </>
     );
 };
 

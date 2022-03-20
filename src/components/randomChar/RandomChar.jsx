@@ -15,13 +15,26 @@ class RandomChar extends Component {
             loading: true,
             error: false,
         };
-        this.updateCharacter();
     }
 
     marvelService = new MarvelService();
 
+    componentDidMount() {
+        this.updateCharacter();
+    }
+
     onCharLoaded = (char) => {
-        this.setState({ char, loading: false });
+        this.setState({
+            char,
+            loading: false,
+        });
+    };
+
+    onCharLoading = () => {
+        this.setState({
+            loading: true,
+            error: false,
+        });
     };
 
     onCharLoadingError = () => {
@@ -33,6 +46,7 @@ class RandomChar extends Component {
 
     updateCharacter = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onCharLoading();
         this.marvelService
             .getCharacter(id)
             .then(this.onCharLoaded)
@@ -43,7 +57,9 @@ class RandomChar extends Component {
         const { char, loading, error } = this.state;
         const errorMessage = error ? <ErrorMessage /> : null;
         const spinner = loading ? <Spinner /> : null;
-        const randomBlockContent = !(loading || error) ? <View char={char} /> : null;
+        const randomBlockContent = !(loading || error) ? (
+            <View char={char} />
+        ) : null;
 
         return (
             <div className='random-char'>
@@ -56,7 +72,10 @@ class RandomChar extends Component {
                         him better?
                     </p>
                     <p className='random-char__title'>Or choose another one</p>
-                    <button className='button button_main'>
+                    <button
+                        className='button button_main'
+                        onClick={this.updateCharacter}
+                    >
                         <div className='inner'>try it</div>
                     </button>
                     <img
@@ -74,9 +93,23 @@ const View = (props) => {
     const {
         char: { name, description, thumbnail, homepage, wiki },
     } = props;
+
+    let imgStyle = { objectFit: 'cover' };
+
+    if (
+        thumbnail ===
+        'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+    ) {
+        imgStyle = { objectFit: 'contain' };
+    }
     return (
         <div className='random-char__block'>
-            <img src={thumbnail} alt={name} className='random-char__img' />
+            <img
+                src={thumbnail}
+                alt={name}
+                className='random-char__img'
+                style={imgStyle}
+            />
             <div className='random-char__info'>
                 <p className='random-char__name'>{name}</p>
                 <p className='random-char__descr'>{description}</p>
