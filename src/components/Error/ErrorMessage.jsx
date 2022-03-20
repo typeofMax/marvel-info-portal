@@ -10,7 +10,7 @@ const ErrorMessage = () => {
                 className='error-message__img'
             />
             <p className='error-message__text'>
-                Failed to load character, sorry!
+                Failed to load, sorry!
                 <br /> 
                 Please try again
             </p>
