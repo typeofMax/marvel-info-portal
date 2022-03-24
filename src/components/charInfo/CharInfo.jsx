@@ -2,8 +2,8 @@ import { Component } from 'react';
 
 import MarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
-import ErrorMessage from '../Error/ErrorMessage';
-import Spinner from '../Spinner/Spinner';
+import ErrorMessage from '../error/ErrorMessage';
+import Spinner from '../spinner/Spinner';
 
 import './charInfo.scss';
 
