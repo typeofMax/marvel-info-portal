@@ -30,6 +30,7 @@ class MarvelService {
         const description = char.description
             ? `${char.description.slice(0, 207)}...`
             : 'There is no description for this character';
+
         return {
             id: char.id,
             name: char.name,
