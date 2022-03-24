@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
@@ -34,7 +35,7 @@ class CharInfo extends Component {
         }
 
         this.onCharLoading();
-        console.log('запрос');
+        
         this.marvelService
             .getCharacter(selectetCharId)
             .then(this.onCharLoaded)
@@ -131,6 +132,10 @@ const View = (props) => {
             </ul>
         </>
     );
+};
+
+CharInfo.propTypes = {
+    selectetCharId: PropTypes.number,
 };
 
 export default CharInfo;
