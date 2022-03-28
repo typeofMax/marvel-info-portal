@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
@@ -7,43 +7,37 @@ import ErrorMessage from '../error/ErrorMessage';
 
 import './charList.scss';
 
-class CharList extends Component {
-    state = {
-        characters: [],
-        loading: true,
-        error: false,
-        offset: 210,
-    };
+const CharList = (props) => {
+    const [charactersList, setCharactersList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [offset, setOffset] = useState(210);
 
-    marvelService = new MarvelService();
+    const marvelService = new MarvelService();
 
-    componentDidMount() {
-        this.updateCharacters();
-    }
+    useEffect(() => {
+        updateCharacters();
+    }, [])
 
-    updateCharacters = (offset) => {
-        this.marvelService
+    const updateCharacters = (offset) => {
+        marvelService
             .getAllCharacters(offset)
-            .then(this.onCharLoaded)
-            .catch(this.onLoadingError);
+            .then(onCharLoaded)
+            .catch(onLoadingError);
     };
 
-    onCharLoaded = (newCharacters) => {
-        this.setState(({ characters, offset }) => ({
-            characters: [...characters, ...newCharacters],
-            loading: false,
-            offset: offset + 9,
-        }));
+    const onCharLoaded = (newCharacters) => {
+        setCharactersList((charactersList) => [...charactersList, ...newCharacters]);
+        setLoading(false);
+        setOffset(offset => offset + 9);
     };
 
-    onLoadingError = () => {
-        this.setState({
-            loading: false,
-            error: true,
-        });
+    const onLoadingError = () => {
+        setLoading(false);
+        setError(true);
     };
 
-    renderCharactersList = (arrayOfCharacters) => {
+    const renderCharactersList = (arrayOfCharacters) => {
         const charactersListItems = arrayOfCharacters.map((char) => {
             let imgStyle = { objectFit: 'cover' };
 
@@ -57,7 +51,7 @@ class CharList extends Component {
                 <li
                     key={char.id}
                     className='char__item'
-                    onClick={() => this.props.onCharSelected(char.id)}
+                    onClick={() => props.onCharSelected(char.id)}
                 >
                     <img
                         src={char.thumbnail}
@@ -72,9 +66,7 @@ class CharList extends Component {
         return <ul className='char__grid'>{charactersListItems}</ul>;
     };
 
-    render() {
-        const { characters, loading, error, offset } = this.state;
-        const listOfCharacters = this.renderCharactersList(characters);
+        const listOfCharacters = renderCharactersList(charactersList);
         const errorMessage = error ? <ErrorMessage /> : null;
         const spinner = loading ? <Spinner /> : null;
         const viewContent = !(loading || error) ? listOfCharacters : null;
@@ -86,13 +78,12 @@ class CharList extends Component {
                 {viewContent}
                 <button
                     className='button button_main button_long'
-                    onClick={() => this.updateCharacters(offset)}
+                    onClick={() => updateCharacters(offset)}
                 >
                     <div className='inner'>load more</div>
                 </button>
             </div>
         );
-    }
 }
 
 CharList.propTypes = {
