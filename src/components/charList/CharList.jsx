@@ -17,6 +17,7 @@ const CharList = (props) => {
 
     useEffect(() => {
         updateCharacters();
+        // eslint-disable-next-line
     }, [])
 
     const updateCharacters = (offset) => {
@@ -37,8 +38,19 @@ const CharList = (props) => {
         setError(true);
     };
 
-    const renderCharactersList = (arrayOfCharacters) => {
-        const charactersListItems = arrayOfCharacters.map((char) => {
+    const itemsRef = useRef([]);
+
+    const focusOnItem = (i) => {
+        itemsRef.current.forEach(item => {
+            item.classList.remove('char__item_selected');
+        })
+
+        itemsRef.current[i].classList.add('char__item_selected');
+        itemsRef.current[i].focus();
+    }
+
+    function renderCharactersList(arrayOfCharacters) {
+        const charactersListItems = arrayOfCharacters.map((char, i) => {
             let imgStyle = { objectFit: 'cover' };
 
             if (
@@ -49,9 +61,21 @@ const CharList = (props) => {
             }
             return (
                 <li
+                    ref={el => itemsRef.current[i] = el}
                     key={char.id}
+                    tabIndex={0}
                     className='char__item'
-                    onClick={() => props.onCharSelected(char.id)}
+                    onClick={() => {
+                        props.onCharSelected(char.id);
+                        focusOnItem(i)
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === 'Enter') {
+                            e.preventDefault();
+                            props.onCharSelected(char.id);
+                            focusOnItem(i);
+                        }
+                    }}
                 >
                     <img
                         src={char.thumbnail}
@@ -89,4 +113,5 @@ const CharList = (props) => {
 CharList.propTypes = {
     onCharSelected: PropTypes.func,
 };
+
 export default CharList;
