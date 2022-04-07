@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../error/ErrorMessage';
 
@@ -9,45 +9,37 @@ import './charList.scss';
 
 const CharList = (props) => {
     const [charactersList, setCharactersList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [offset, setOffset] = useState(210);
 
-    const marvelService = new MarvelService();
+    const { loading, error, getAllCharacters } = useMarvelService();
 
     useEffect(() => {
         updateCharacters();
         // eslint-disable-next-line
-    }, [])
+    }, []);
 
     const updateCharacters = (offset) => {
-        marvelService
-            .getAllCharacters(offset)
-            .then(onCharLoaded)
-            .catch(onLoadingError);
+        getAllCharacters(offset).then(onCharLoaded);
     };
 
     const onCharLoaded = (newCharacters) => {
-        setCharactersList((charactersList) => [...charactersList, ...newCharacters]);
-        setLoading(false);
-        setOffset(offset => offset + 9);
-    };
-
-    const onLoadingError = () => {
-        setLoading(false);
-        setError(true);
+        setCharactersList((charactersList) => [
+            ...charactersList,
+            ...newCharacters,
+        ]);
+        setOffset((offset) => offset + 9);
     };
 
     const itemsRef = useRef([]);
 
     const focusOnItem = (i) => {
-        itemsRef.current.forEach(item => {
+        itemsRef.current.forEach((item) => {
             item.classList.remove('char__item_selected');
-        })
+        });
 
         itemsRef.current[i].classList.add('char__item_selected');
         itemsRef.current[i].focus();
-    }
+    };
 
     function renderCharactersList(arrayOfCharacters) {
         const charactersListItems = arrayOfCharacters.map((char, i) => {
@@ -61,13 +53,13 @@ const CharList = (props) => {
             }
             return (
                 <li
-                    ref={el => itemsRef.current[i] = el}
+                    ref={(el) => (itemsRef.current[i] = el)}
                     key={char.id}
                     tabIndex={0}
                     className='char__item'
                     onClick={() => {
                         props.onCharSelected(char.id);
-                        focusOnItem(i)
+                        focusOnItem(i);
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === 'Enter') {
@@ -88,27 +80,27 @@ const CharList = (props) => {
         });
 
         return <ul className='char__grid'>{charactersListItems}</ul>;
-    };
+    }
 
-        const listOfCharacters = renderCharactersList(charactersList);
-        const errorMessage = error ? <ErrorMessage /> : null;
-        const spinner = loading ? <Spinner /> : null;
-        const viewContent = !(loading || error) ? listOfCharacters : null;
+    const listOfCharacters = renderCharactersList(charactersList);
 
-        return (
-            <div className='char__list'>
-                {errorMessage}
-                {spinner}
-                {viewContent}
-                <button
-                    className='button button_main button_long'
-                    onClick={() => updateCharacters(offset)}
-                >
-                    <div className='inner'>load more</div>
-                </button>
-            </div>
-        );
-}
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+   
+    return (
+        <div className='char__list'>
+            {errorMessage}
+            {spinner}
+            {listOfCharacters}
+            <button
+                className='button button_main button_long'
+                onClick={() => updateCharacters(offset)}
+            >
+                <div className='inner'>load more</div>
+            </button>
+        </div>
+    );
+};
 
 CharList.propTypes = {
     onCharSelected: PropTypes.func,
