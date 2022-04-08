@@ -6,7 +6,6 @@ const useHttp = () => {
 
     const request = useCallback(async (url) => {
         setLoading(true);
-        console.log('request');
         try {
             const response = await fetch(url);
 
