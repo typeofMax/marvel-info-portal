@@ -89,9 +89,9 @@ const CharList = (props) => {
    
     return (
         <div className='char__list'>
+            {listOfCharacters}
             {errorMessage}
             {spinner}
-            {listOfCharacters}
             <button
                 className='button button_main button_long'
                 onClick={() => updateCharacters(offset)}
