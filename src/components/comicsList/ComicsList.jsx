@@ -13,7 +13,7 @@ const ComicsList = () => {
 
     useEffect(() => {
         updateComicses();
-        //eslist-disable-next-line
+        // eslint-disable-next-line
     }, []);
 
     const updateComicses = (offset) => {
