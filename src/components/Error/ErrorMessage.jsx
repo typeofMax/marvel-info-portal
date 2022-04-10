@@ -9,11 +9,6 @@ const ErrorMessage = () => {
                 alt='Error 404'
                 className='error-message__img'
             />
-            <p className='error-message__text'>
-                Failed to load, sorry!
-                <br /> 
-                Please try again
-            </p>
         </div>
     );
 }
