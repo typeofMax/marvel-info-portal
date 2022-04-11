@@ -55,7 +55,9 @@ const useMarvelService = () => {
                 comics.description || 'There is no description for this comic',
             pageCount: `${comics.pageCount} pages`,
             thumbnail: `${comics.thumbnail.path}.${comics.thumbnail.extension}`,
-            price: `${comics.prices[0].price}$` || 'Not availible',
+            price: comics.prices[0].price
+                ? `${comics.prices[0].price}$`
+                : 'not available',
         };
     }
 
