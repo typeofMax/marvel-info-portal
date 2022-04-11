@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { scroller } from 'react-scroll';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -41,6 +42,15 @@ const CharList = (props) => {
         itemsRef.current[i].focus();
     };
 
+    const scrollTo = () => {
+        scroller.scrollTo('char__info', {
+            duration: 900,
+            delay: 100,
+            smooth: true,
+            offset: -20,
+        });
+    };
+
     function renderCharactersList(arrayOfCharacters) {
         const charactersListItems = arrayOfCharacters.map((char, i) => {
             let imgStyle = { objectFit: 'cover' };
@@ -60,12 +70,14 @@ const CharList = (props) => {
                     onClick={() => {
                         props.onCharSelected(char.id);
                         focusOnItem(i);
+                        scrollTo();
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === 'Enter') {
                             e.preventDefault();
                             props.onCharSelected(char.id);
                             focusOnItem(i);
+                            scrollTo();
                         }
                     }}
                 >
@@ -86,7 +98,7 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
-   
+
     return (
         <div className='char__list'>
             {listOfCharacters}
