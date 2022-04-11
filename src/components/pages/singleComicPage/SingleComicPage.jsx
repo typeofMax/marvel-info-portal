@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import useMarvelService from '../../../services/MarvelService';
 import AppBanner from '../../appBanner/AppBanner';
@@ -9,6 +9,7 @@ import ErrorMessage from '../../error/ErrorMessage';
 import './singleComicPage.scss';
 
 const SingleComicPage = () => {
+
     const { comicId } = useParams();
     const [comic, setComic] = useState(null);
     const { loading, error, clearError, getComic } = useMarvelService();
@@ -44,6 +45,8 @@ const SingleComicPage = () => {
 };
 
 const View = ({ comic }) => {
+    const navigate = useNavigate();
+
     const { title, description, pageCount, thumbnail, price } = comic;
 
     return (
@@ -56,9 +59,9 @@ const View = ({ comic }) => {
                 <p className='single-comic__descr'>Language: en-us</p>
                 <div className='single-comic__price'>{price}</div>
             </div>
-            <Link to={'/comics'} className='single-comic__back'>
-                Back to all
-            </Link>
+            <p className='single-comic__back' onClick={() => navigate(-1)}>
+                Сome back
+            </p>
         </div>
     );
 };
