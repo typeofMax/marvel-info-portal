@@ -10,15 +10,14 @@ const Page404 = () => {
                 <meta name='description' content='Error 404 Page not found' />
                 <title>Page not found</title>
             </Helmet>
-            <ErrorMessage />
-            <p
+            <ErrorMessage
                 style={{
                     marginTop: '25px',
                     textAlign: 'center',
                     fontWeight: 'bold',
                     fontSize: '48px',
                 }}
-            >
+            /><p>
                 <span style={{ color: '#9F0013', textTransform: 'uppercase' }}>
                     Error 404|
                 </span>
