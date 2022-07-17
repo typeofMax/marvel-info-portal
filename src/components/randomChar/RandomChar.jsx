@@ -85,10 +85,10 @@ const View = (props) => {
                 <p className='random-char__name'>{name}</p>
                 <p className='random-char__descr'>{description}</p>
                 <div className='random-char__btns'>
-                    <a href={homepage} className='button button_main'>
+                    <a href={homepage} target='_blank' rel='noreferrer' className='button button_main'>
                         <div className='inner'>HOMEPAGE</div>
                     </a>
-                    <a href={wiki} className='button button_secondary'>
+                    <a href={wiki} target='_blank' rel='noreferrer' className='button button_secondary'>
                         <div className='inner'>WIKI</div>
                     </a>
                 </div>
