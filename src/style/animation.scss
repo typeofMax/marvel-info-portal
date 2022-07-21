@@ -1,0 +1,16 @@
+.item {
+	&-enter {
+		opacity: 0;
+		&-active {
+			opacity: 1;
+			transition: opacity 1000ms ease-in;
+		}
+	}
+	&-exit {
+		opacity: 1;
+		&-active {
+			opacity: 0;
+			transition: opacity 500ms ease-in;
+		}
+	}
+}
