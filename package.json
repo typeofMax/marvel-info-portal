@@ -2,11 +2,12 @@
   "name": "marvel-info-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://typeofmax.github.io/marvel-info-portal/",
+  "homepage": "https://typeofmax.github.io/marvel-info-portal",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^4.0.0",
     "i": "^0.3.7",
     "npm": "^8.6.0",
     "prop-types": "^15.8.1",
