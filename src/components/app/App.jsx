@@ -10,10 +10,10 @@ const App = () => {
 				<AppHeader />
 				<main>
 					<Routes>
-						<Route path='/marvel-info-portal' element={<MainPage />} />
+						<Route path='/marvel-info-portal/' element={<MainPage />} />
 						<Route path='/marvel-info-portal/comics' element={<ComicsPage />} />
 						<Route
-							path='/marvel-info-portal/comics/:comicId'
+							path='marvel-info-portal/comics/:comicId'
 							element={<SingleComicPage />}
 						/>
 						<Route path='*' element={<Page404 />} />
