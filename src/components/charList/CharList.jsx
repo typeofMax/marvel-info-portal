@@ -1,8 +1,8 @@
 //@Libs
-import {useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {scroller} from 'react-scroll';
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import { scroller } from 'react-scroll';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 //@Components
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../Spinner/Spinner';
@@ -14,7 +14,7 @@ const CharList = (props) => {
 	const [charactersList, setCharactersList] = useState([]);
 	const [offset, setOffset] = useState(210);
 
-	const {loading, error, getAllCharacters} = useMarvelService();
+	const { loading, error, getAllCharacters } = useMarvelService();
 
 	useEffect(() => {
 		updateCharacters();
@@ -26,10 +26,7 @@ const CharList = (props) => {
 	};
 
 	const onCharLoaded = (newCharacters) => {
-		setCharactersList((charactersList) => [
-			...charactersList,
-			...newCharacters,
-		]);
+		setCharactersList((charactersList) => [...charactersList, ...newCharacters]);
 		setOffset((offset) => offset + 9);
 	};
 
@@ -55,13 +52,12 @@ const CharList = (props) => {
 
 	function renderCharactersList(arrayOfCharacters) {
 		const charactersListItems = arrayOfCharacters.map((char, i) => {
-			let imgStyle = {objectFit: 'cover'};
+			let imgStyle = { objectFit: 'cover' };
 
 			if (
-				char.thumbnail ===
-				'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+				char.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
 			) {
-				imgStyle = {objectFit: 'fill'};
+				imgStyle = { objectFit: 'fill' };
 			}
 			return (
 				<CSSTransition key={char.id} timeout={1000} classNames='item' in={true}>
@@ -83,7 +79,7 @@ const CharList = (props) => {
 							}
 						}}
 					>
-						<img src={char.thumbnail} alt={char.name} style={imgStyle}/>
+						<img src={char.thumbnail} alt={char.name} style={imgStyle} />
 						<div className='char__name'>{char.name}</div>
 					</li>
 				</CSSTransition>
@@ -95,20 +91,19 @@ const CharList = (props) => {
 
 	const listOfCharacters = renderCharactersList(charactersList);
 
-	const errorMessage = error ? <ErrorMessage/> : null;
-	const spinner = loading ? <Spinner/> : null;
+	const errorMessage = error ? <ErrorMessage /> : null;
+	const spinner = loading ? <Spinner /> : null;
 
 	return (
 		<div className='char__list'>
 			<TransitionGroup component={null}>{listOfCharacters}</TransitionGroup>
 			{errorMessage}
 			{spinner}
-			{loading ? null : <button
-				className='button button_main button_long'
-				onClick={() => updateCharacters(offset)}
-			>
-				<div className='inner'>load more</div>
-			</button>}
+			{loading ? null : (
+				<button className='button button_main button_long' onClick={() => updateCharacters(offset)}>
+					<div className='inner'>load more</div>
+				</button>
+			)}
 		</div>
 	);
 };
