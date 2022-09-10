@@ -33,17 +33,13 @@ const ComicsList = () => {
 		const comicsesListItems = comicses.map((comic, i) => {
 			return (
 				<CSSTransition key={i} timeout={1000} classNames='item' in={true}>
-					<li className='comics__item' >
-					<Link to={`${comic.id}`}>
-						<img
-							src={comic.thumbnail}
-							alt={comic.title}
-							className='comics__item-img'
-						/>
-						<div className='comics__item-name'>{comic.title}</div>
-						<div className='comics__item-price'>{comic.price}</div>
-					</Link>
-				</li>
+					<li className='comics__item'>
+						<Link to={`${comic.id}`}>
+							<img src={comic.thumbnail} alt={comic.title} className='comics__item-img' />
+							<div className='comics__item-name'>{comic.title}</div>
+							<div className='comics__item-price'>{comic.price}</div>
+						</Link>
+					</li>
 				</CSSTransition>
 			);
 		});
@@ -60,12 +56,11 @@ const ComicsList = () => {
 			<TransitionGroup component={null}>{listOfComicses}</TransitionGroup>
 			{errorMessage}
 			{spinner}
-			<button
-				onClick={() => updateComicses(offset)}
-				className='button button_main button_long'
-			>
-				<div className='inner'>load more</div>
-			</button>
+			{loading ? null : (
+				<button onClick={() => updateComicses(offset)} className='button button_main button_long'>
+					<div className='inner'>load more</div>
+				</button>
+			)}
 		</div>
 	);
 };
