@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import useMarvelService from '../../services/MarvelService';
 import AppBanner from '../../components/appBanner/AppBanner';
 import Spinner from '../../components/spinner/Spinner';
-import ErrorMessage from '../../components/error/ErrorMessage';
+import ErrorMessage from '../../components/Error/ErrorMessage';
 
 import './singleComicPage.scss';
 
