@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useMarvelService from '../../services/MarvelService';
 import Skeleton from '../skeleton/Skeleton';
 import ErrorMessage from '../Error/ErrorMessage';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 
 import './charInfo.scss';
 

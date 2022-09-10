@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 import ErrorMessage from '../Error/ErrorMessage';
 
 import './randomChar.scss';

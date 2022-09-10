@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 //@Components
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 import ErrorMessage from '../Error/ErrorMessage';
 //@Styles
 import './comicsList.scss';
